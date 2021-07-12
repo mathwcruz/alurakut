@@ -28,6 +28,12 @@ export const GlobalStyle = createGlobalStyle`
     color: #333333;
   }
 
+  img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+  }
+
   body, button, input, textarea {
     font-family: 'Poppins', sans-serif;
     font-weight: 400;
