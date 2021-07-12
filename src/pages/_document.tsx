@@ -14,8 +14,8 @@ export default class MyDocument extends Document {
           <link rel='stylesheet' type='text/css' href='/nprogress.css' />
           <link
             rel='shortcut icon'
-            href='/images/favicon.png'
-            type='image/png'
+            href='/images/favicon.svg'
+            type='image/svg'
           />
         </Head>
         <body>
