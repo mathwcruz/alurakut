@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { useMemo, useState } from 'react';
 import { AlurakutMenu, OrkutNostalgicIconSet } from 'lib/AlurakutCommons';
 import { ProfileSidebar } from 'components/ProfileSidebar';
@@ -64,7 +65,12 @@ export default function Home() {
               {favoritesPeople?.map((person) => (
                 <li key={person?.id}>
                   <a href={`/users/${person?.userName}`}>
-                    <img src={person?.avatar_url} />
+                    <Image
+                      src={person?.avatar_url}
+                      alt={person?.userName}
+                      width={220}
+                      height={220}
+                    />
                     <span>{person?.userName}</span>
                   </a>
                 </li>
