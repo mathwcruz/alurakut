@@ -1,4 +1,5 @@
 import { createGlobalStyle } from 'styled-components';
+import { AlurakutStyles } from 'lib/AlurakutCommons';
 
 export const GlobalStyle = createGlobalStyle`
   * {
@@ -46,4 +47,6 @@ export const GlobalStyle = createGlobalStyle`
   button {
     cursor: pointer;
   }
+
+  ${AlurakutStyles}
 `;
