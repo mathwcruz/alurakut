@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useMemo, useState } from 'react';
 import { AlurakutMenu, OrkutNostalgicIconSet } from 'lib/AlurakutCommons';
 import { ProfileSidebar } from 'components/ProfileSidebar';
 
@@ -8,26 +8,34 @@ import { Box } from 'styles/components/Box';
 import { MainGrid } from 'styles/components/MainGrid';
 import { ProfileRelationsBoxWrapper } from 'styles/components/ProfileRelations';
 
+interface favoritesPeopleData {
+  id: string;
+  userName: string;
+  avatar_url: string;
+}
+
 export default function Home() {
+  const [favoritesPeople, setFavoritesPeople] = useState<favoritesPeopleData[]>(
+    []
+  );
+
   const githubUserName = 'mathwcruz';
-  let favoritesPeople = [
-    'mathwcruz',
-    'omariosouto',
-    'juunegreiros',
-    'marcobrunodev',
-    'felipefialho',
-  ];
 
-  // async function loadFavoritesPeople() {
-  //   const { data } = await api.get(
-  //     `https://api.github.com/users/${githubUserName}/followers`
-  //   );
+  useMemo(async () => {
+    const { data } = await api.get(
+      `https://api.github.com/users/${githubUserName}/followers`
+    );
 
-  //   setFavoritesPeople(data);
-  // }
+    const favoritesPeople = data?.slice(0, 6)?.map((people) => {
+      return {
+        id: people?.id,
+        userName: people?.login,
+        avatar_url: people?.avatar_url,
+      };
+    });
 
-  // buscar followers do github
-  useEffect(() => {}, []);
+    setFavoritesPeople(favoritesPeople);
+  }, []);
 
   console.log({ favoritesPeople });
 
@@ -54,10 +62,10 @@ export default function Home() {
             </h2>
             <ul>
               {favoritesPeople?.map((person) => (
-                <li key={person}>
-                  <a href={`/users/${person}`}>
-                    <img src={`https://github.com/${person}.png`} />
-                    <span>{person}</span>
+                <li key={person?.id}>
+                  <a href={`/users/${person?.userName}`}>
+                    <img src={person?.avatar_url} />
+                    <span>{person?.userName}</span>
                   </a>
                 </li>
               ))}
