@@ -1,11 +1,12 @@
 import Link from 'next/link';
 
+import { Wrapper } from 'styles/pages/404';
+
 export default function NotFound() {
   return (
-    <div className=''>
+    <Wrapper>
       <div>
-        <img src='/images/404-not-found.svg' alt='Página não encontrada' />{' '}
-        {/* pegar imagem no undraw com as cores do app */}
+        <img src='/images/404-not-found.svg' alt='Página não encontrada' />
         <p>Esta página não foi encontrada</p>
         <h4>
           Siga para a{' '}
@@ -14,6 +15,6 @@ export default function NotFound() {
           </Link>
         </h4>
       </div>
-    </div>
+    </Wrapper>
   );
 }
