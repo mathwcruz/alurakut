@@ -28,7 +28,11 @@ export function ProfileBox({ title, type, profileData }: ProfileBoxProps) {
         <ul>
           {profileData?.map((person) => (
             <li key={person?.id}>
-              <a href={`/users/${person?.userName}`}>
+              <a
+                href={`https://github.com/${person?.userName}`}
+                target='_blank'
+                rel='noopener noreferrer'
+              >
                 <img src={person?.avatarUrl} alt={person?.userName} />
                 <span>{person?.userName}</span>
               </a>

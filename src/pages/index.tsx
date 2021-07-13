@@ -25,6 +25,7 @@ interface ComunityData {
 }
 
 //TODO: estilizar página 404
+//Toggle button para mudar de tema04
 
 export default function Home({ githubUserName = 'mathwcruz' }) {
   const [favoritesPeople, setFavoritesPeople] = useState<FavoritesPeopleData[]>(
