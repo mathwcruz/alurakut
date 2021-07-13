@@ -7,6 +7,7 @@ import { api } from 'services/api';
 import { Box } from 'styles/components/Box';
 import { MainGrid } from 'styles/components/MainGrid';
 import { ProfileRelationsBoxWrapper } from 'styles/components/ProfileRelations';
+import { NewComunityForm } from '~/components/NewComunityForm';
 
 interface FavoritesPeopleData {
   id: string;
@@ -73,28 +74,7 @@ export default function Home({ githubUserName = 'mathwcruz' }) {
             <OrkutNostalgicIconSet />
           </Box>
 
-          {/* componentizar formulário */}
-          <Box>
-            <h1 className='subTitle'>O que você deseja fazer?</h1>
-            <form onSubmit={handleCreateComunity}>
-              <div>
-                <input
-                  type='text'
-                  name='title'
-                  placeholder='Qual vai ser o nome da sua comunidade?'
-                  aria-label='Qual vai ser o nome da sua comunidade?'
-                />
-              </div>
-              <div>
-                <input
-                  name='image'
-                  placeholder='Coloque uma URL para usarmos de capa'
-                  aria-label='Coloque uma URL para usarmos de capa'
-                />
-              </div>
-              <button type='submit'>Criar comunidade</button>
-            </form>
-          </Box>
+          <NewComunityForm handleSubmit={handleCreateComunity} />
         </div>
         {/* componentizar ProfileRelations */}
         <div
