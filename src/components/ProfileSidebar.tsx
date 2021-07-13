@@ -1,3 +1,5 @@
+import { AlurakutProfileSidebarMenuDefault } from 'lib/AlurakutCommons';
+
 import { Box } from 'styles/components/Box';
 
 interface ProfileSidebarProps {
@@ -12,6 +14,19 @@ export function ProfileSidebar({ userName }: ProfileSidebarProps) {
         src={`https://github.com/${userName}.png`}
         alt='Matheus da Cruz'
       />
+      <hr />
+      <p>
+        <a
+          className='boxLink'
+          href={`https://github.com/${userName}`}
+          target='_blank'
+          rel='noopener noreferrer'
+        >
+          {userName}
+        </a>
+      </p>
+      <hr />
+      <AlurakutProfileSidebarMenuDefault />
     </Box>
   );
 }
