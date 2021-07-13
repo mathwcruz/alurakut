@@ -4,13 +4,13 @@ import { v4 as uuid } from 'uuid';
 import { AlurakutMenu, OrkutNostalgicIconSet } from 'lib/AlurakutCommons';
 
 import { NewComunityForm } from 'components/NewComunityForm';
+import { ProfileBox } from 'components/ProfileBox';
 import { ProfileSidebar } from 'components/ProfileSidebar';
 
 import { api } from 'services/api';
 
 import { Box } from 'styles/components/Box';
 import { MainGrid } from 'styles/components/MainGrid';
-import { ProfileRelationsBoxWrapper } from 'styles/components/ProfileRelations';
 
 interface FavoritesPeopleData {
   id: string;
@@ -71,6 +71,7 @@ export default function Home({ githubUserName = 'mathwcruz' }) {
         <div className='profile' style={{ gridArea: 'profile' }}>
           <ProfileSidebar userName={githubUserName} />
         </div>
+
         <div className='welcome' style={{ gridArea: 'welcome' }}>
           <Box>
             <h1 className='title'>Bem-vindo(a)</h1>
@@ -79,40 +80,22 @@ export default function Home({ githubUserName = 'mathwcruz' }) {
 
           <NewComunityForm handleSubmit={handleCreateComunity} />
         </div>
-        {/* componentizar ProfileRelations */}
+
         <div
           className='profileRelations'
           style={{ gridArea: 'profileRelations' }}
         >
-          <ProfileRelationsBoxWrapper>
-            <h2 className='smallTitle'>
-              Pessoas da comunidade ({favoritesPeople?.length})
-            </h2>
-            <ul>
-              {favoritesPeople?.map((person) => (
-                <li key={person?.id}>
-                  <a href={`/users/${person?.userName}`}>
-                    <img src={person?.avatarUrl} alt={person?.userName} />
-                    <span>{person?.userName}</span>
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </ProfileRelationsBoxWrapper>
-          {/* componentizar ProfileComunities */}
-          <ProfileRelationsBoxWrapper>
-            <h2 className='smallTitle'>Comunidades ({comunities?.length})</h2>
-            <ul>
-              {comunities?.map((comunity) => (
-                <li key={comunity?.id}>
-                  <a href={`/users/${comunity?.title}`}>
-                    <img alt={comunity?.title} src={comunity.image} />
-                    <span>{comunity?.title}</span>
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </ProfileRelationsBoxWrapper>
+          <ProfileBox
+            title='Pessoas da comunidade'
+            type='favoritesPeople'
+            profileData={favoritesPeople}
+          />
+
+          <ProfileBox
+            title='Comunidades'
+            type='comunities'
+            profileData={comunities}
+          />
         </div>
       </MainGrid>
     </>
