@@ -3,9 +3,9 @@ import { v4 as uuid } from 'uuid';
 
 import { AlurakutMenu, OrkutNostalgicIconSet } from 'lib/AlurakutCommons';
 
-import { NewComunityForm } from 'components/NewComunityForm';
-import { ProfileBox } from 'components/ProfileBox';
-import { ProfileSidebar } from 'components/ProfileSidebar';
+import { NewComunityForm } from 'components/Home/NewComunityForm';
+import { ProfileBox } from 'components/Home/ProfileBox';
+import { ProfileSidebar } from 'components/Home/ProfileSidebar';
 
 import { api } from 'services/api';
 
@@ -24,8 +24,7 @@ interface ComunityData {
   image: string;
 }
 
-//TODO: estilizar página 404
-//Toggle button para mudar de tema04
+//TODO: Toggle button para mudar de tema
 
 export default function Home({ githubUserName = 'mathwcruz' }) {
   const [favoritesPeople, setFavoritesPeople] = useState<FavoritesPeopleData[]>(
@@ -52,7 +51,7 @@ export default function Home({ githubUserName = 'mathwcruz' }) {
   function handleCreateComunity(e) {
     e.preventDefault();
 
-    const data = new FormData(e.target);
+    const data = new FormData(e?.target);
     const comunityName = data.get('title');
     const comunityImageUrl = data.get('image');
 

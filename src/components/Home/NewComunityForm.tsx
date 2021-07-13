@@ -1,4 +1,4 @@
-import { Box } from '~/styles/components/Box';
+import { Box } from 'styles/components/Box';
 
 interface NewComunityFormProps {
   handleSubmit: (e) => void;
