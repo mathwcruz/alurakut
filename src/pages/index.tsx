@@ -1,5 +1,9 @@
-import { FormEvent, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
+import { v4 as uuid } from 'uuid';
+
 import { AlurakutMenu, OrkutNostalgicIconSet } from 'lib/AlurakutCommons';
+
+import { NewComunityForm } from 'components/NewComunityForm';
 import { ProfileSidebar } from 'components/ProfileSidebar';
 
 import { api } from 'services/api';
@@ -7,7 +11,6 @@ import { api } from 'services/api';
 import { Box } from 'styles/components/Box';
 import { MainGrid } from 'styles/components/MainGrid';
 import { ProfileRelationsBoxWrapper } from 'styles/components/ProfileRelations';
-import { NewComunityForm } from '~/components/NewComunityForm';
 
 interface FavoritesPeopleData {
   id: string;
@@ -53,7 +56,7 @@ export default function Home({ githubUserName = 'mathwcruz' }) {
     const comunityImageUrl = data.get('image');
 
     const newComunity = {
-      id: new Date().toISOString(),
+      id: uuid(),
       title: String(comunityName),
       image: String(comunityImageUrl),
     };
