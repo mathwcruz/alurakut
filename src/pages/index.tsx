@@ -8,19 +8,25 @@ import { Box } from 'styles/components/Box';
 import { MainGrid } from 'styles/components/MainGrid';
 import { ProfileRelationsBoxWrapper } from 'styles/components/ProfileRelations';
 
-interface favoritesPeopleData {
+interface FavoritesPeopleData {
   id: string;
   userName: string;
   avatarUrl: string;
 }
 
+interface ComunityData {
+  id: string;
+  title: string;
+  image: string;
+}
+
 //TODO: estilizar página 404
 
 export default function Home({ githubUserName = 'mathwcruz' }) {
-  const [favoritesPeople, setFavoritesPeople] = useState<favoritesPeopleData[]>(
+  const [favoritesPeople, setFavoritesPeople] = useState<FavoritesPeopleData[]>(
     []
   );
-  const [comunities, setComunities] = useState(['Alurakut']);
+  const [comunities, setComunities] = useState<ComunityData[]>([]);
 
   useMemo(async () => {
     const { data } = await api.get(
@@ -38,12 +44,20 @@ export default function Home({ githubUserName = 'mathwcruz' }) {
     setFavoritesPeople(favoritesPeople);
   }, []);
 
-  function handleCreateComunity(e: FormEvent) {
+  function handleCreateComunity(e) {
     e.preventDefault();
 
-    console.log({ e });
+    const data = new FormData(e.target);
+    const comunityName = data.get('title');
+    const comunityImageUrl = data.get('image');
 
-    setComunities([...comunities]);
+    const newComunity = {
+      id: new Date().toISOString(),
+      title: String(comunityName),
+      image: String(comunityImageUrl),
+    };
+
+    setComunities([...comunities, newComunity]);
   }
 
   return (
@@ -107,13 +121,10 @@ export default function Home({ githubUserName = 'mathwcruz' }) {
             <h2 className='smallTitle'>Comunidades ({comunities?.length})</h2>
             <ul>
               {comunities?.map((comunity) => (
-                <li key={comunity}>
-                  <a href={`https://github.com/mathwcruz`}>
-                    <img
-                      src={`https://github.com/mathwcruz.png`}
-                      alt={`Matheus da Cruz`}
-                    />
-                    <span>{comunity}</span>
+                <li key={comunity?.id}>
+                  <a href={`/users/${comunity?.title}`}>
+                    <img alt={comunity?.title} src={comunity.image} />
+                    <span>{comunity?.title}</span>
                   </a>
                 </li>
               ))}

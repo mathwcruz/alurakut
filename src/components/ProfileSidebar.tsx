@@ -8,7 +8,7 @@ interface ProfileSidebarProps {
 
 export function ProfileSidebar({ userName }: ProfileSidebarProps) {
   return (
-    <Box>
+    <Box as='aside'>
       <img
         style={{ borderRadius: '8px' }}
         src={`https://github.com/${userName}.png`}
