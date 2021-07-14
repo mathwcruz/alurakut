@@ -1,6 +1,6 @@
 import { ProfileRelationsBoxWrapper } from 'styles/components/ProfileRelations';
 
-type ProfileFavoritesPeople = {
+type ProfileFriends = {
   id: string;
   userName: string;
   avatarUrl: string;
@@ -14,8 +14,8 @@ type ProfileComunity = {
 
 interface ProfileBoxProps {
   title: string;
-  type: 'favoritesPeople' | 'comunities';
-  profileData: ProfileComunity[] | ProfileFavoritesPeople[];
+  type: 'friends' | 'comunities';
+  profileData: ProfileComunity[] | ProfileFriends[];
 }
 
 export function ProfileBox({ title, type, profileData }: ProfileBoxProps) {
@@ -24,17 +24,17 @@ export function ProfileBox({ title, type, profileData }: ProfileBoxProps) {
       <h2 className='smallTitle'>
         {title} ({profileData?.length})
       </h2>
-      {type === 'favoritesPeople' ? (
+      {type === 'friends' ? (
         <ul>
-          {profileData?.map((person) => (
-            <li key={person?.id}>
+          {profileData?.map((friend) => (
+            <li key={friend?.id}>
               <a
-                href={`https://github.com/${person?.userName}`}
+                href={`https://github.com/${friend?.userName}`}
                 target='_blank'
                 rel='noopener noreferrer'
               >
-                <img src={person?.avatarUrl} alt={person?.userName} />
-                <span>{person?.userName}</span>
+                <img src={friend?.avatarUrl} alt={friend?.userName} />
+                <span>{friend?.userName}</span>
               </a>
             </li>
           ))}

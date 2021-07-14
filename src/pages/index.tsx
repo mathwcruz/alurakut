@@ -12,7 +12,7 @@ import { api } from 'services/api';
 import { Box } from 'styles/components/Box';
 import { MainGrid } from 'styles/components/MainGrid';
 
-interface FavoritesPeopleData {
+interface FriendsData {
   id: string;
   userName: string;
   avatarUrl: string;
@@ -25,9 +25,7 @@ interface CommunityData {
 }
 
 export default function Home({ githubUserName = 'mathwcruz' }) {
-  const [favoritesPeople, setFavoritesPeople] = useState<FavoritesPeopleData[]>(
-    []
-  );
+  const [friends, setFriends] = useState<FriendsData[]>([]);
   const [comunities, setComunities] = useState<CommunityData[]>([]);
 
   useMemo(async () => {
@@ -35,7 +33,7 @@ export default function Home({ githubUserName = 'mathwcruz' }) {
       `https://api.github.com/users/${githubUserName}/followers`
     );
 
-    const favoritesPeople = data?.slice(0, 6)?.map((people) => {
+    const friends = data?.slice(0, 6)?.map((people) => {
       return {
         id: people?.id,
         userName: people?.login,
@@ -43,7 +41,7 @@ export default function Home({ githubUserName = 'mathwcruz' }) {
       };
     });
 
-    setFavoritesPeople(favoritesPeople);
+    setFriends(friends);
   }, []);
 
   function handleCreateCommunity(e) {
@@ -83,11 +81,7 @@ export default function Home({ githubUserName = 'mathwcruz' }) {
           className='profileRelations'
           style={{ gridArea: 'profileRelations' }}
         >
-          <ProfileBox
-            title='Pessoas da comunidade'
-            type='favoritesPeople'
-            profileData={favoritesPeople}
-          />
+          <ProfileBox title='Amigos' type='friends' profileData={friends} />
 
           <ProfileBox
             title='Comunidades'
