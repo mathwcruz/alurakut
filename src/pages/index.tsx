@@ -3,7 +3,7 @@ import { v4 as uuid } from 'uuid';
 
 import { AlurakutMenu, OrkutNostalgicIconSet } from 'lib/AlurakutCommons';
 
-import { NewComunityForm } from 'components/Home/NewComunityForm';
+import { NewCommunityForm } from 'components/Home/NewCommunityForm';
 import { ProfileBox } from 'components/Home/ProfileBox';
 import { ProfileSidebar } from 'components/Home/ProfileSidebar';
 
@@ -18,19 +18,17 @@ interface FavoritesPeopleData {
   avatarUrl: string;
 }
 
-interface ComunityData {
+interface CommunityData {
   id: string;
   title: string;
   image: string;
 }
 
-//TODO: Toggle button para mudar de tema
-
 export default function Home({ githubUserName = 'mathwcruz' }) {
   const [favoritesPeople, setFavoritesPeople] = useState<FavoritesPeopleData[]>(
     []
   );
-  const [comunities, setComunities] = useState<ComunityData[]>([]);
+  const [comunities, setComunities] = useState<CommunityData[]>([]);
 
   useMemo(async () => {
     const { data } = await api.get(
@@ -48,20 +46,20 @@ export default function Home({ githubUserName = 'mathwcruz' }) {
     setFavoritesPeople(favoritesPeople);
   }, []);
 
-  function handleCreateComunity(e) {
+  function handleCreateCommunity(e) {
     e.preventDefault();
 
     const data = new FormData(e?.target);
-    const comunityName = data.get('title');
-    const comunityImageUrl = data.get('image');
+    const communityName = data.get('title');
+    const communityImageUrl = data.get('image');
 
-    const newComunity = {
+    const newCommunity = {
       id: uuid(),
-      title: String(comunityName),
-      image: String(comunityImageUrl),
+      title: String(communityName),
+      image: String(communityImageUrl),
     };
 
-    setComunities([...comunities, newComunity]);
+    setComunities([...comunities, newCommunity]);
   }
 
   return (
@@ -78,7 +76,7 @@ export default function Home({ githubUserName = 'mathwcruz' }) {
             <OrkutNostalgicIconSet />
           </Box>
 
-          <NewComunityForm handleSubmit={handleCreateComunity} />
+          <NewCommunityForm handleSubmit={handleCreateCommunity} />
         </div>
 
         <div

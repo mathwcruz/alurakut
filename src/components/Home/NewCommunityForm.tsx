@@ -1,10 +1,10 @@
 import { Box } from 'styles/components/Box';
 
-interface NewComunityFormProps {
+interface NewCommunityFormProps {
   handleSubmit: (e) => void;
 }
 
-export function NewComunityForm({ handleSubmit }) {
+export function NewCommunityForm({ handleSubmit }: NewCommunityFormProps) {
   return (
     <Box>
       <h1 className='subTitle'>O que você deseja fazer?</h1>
