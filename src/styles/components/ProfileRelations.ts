@@ -53,4 +53,22 @@ export const ProfileRelationsBoxWrapper = styled(Box)`
       background-image: linear-gradient(0deg, #00000073, transparent);
     }
   }
+  hr {
+    margin-top: 12px;
+    margin-bottom: 8px;
+    border-color: transparent;
+    border-bottom-color: #ecf2fa;
+  }
+
+  a {
+    font-size: 16px;
+    font-weight: bold;
+    color: #2e7bb4;
+    transition: filter 0.4s;
+    text-decoration: none;
+
+    &:hover {
+      filter: brightness(0.85);
+    }
+  }
 `;

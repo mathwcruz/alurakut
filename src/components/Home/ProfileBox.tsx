@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { ProfileRelationsBoxWrapper } from 'styles/components/ProfileRelations';
 
 type ProfileFriends = {
@@ -51,6 +52,10 @@ export function ProfileBox({ title, type, profileData }: ProfileBoxProps) {
           ))}
         </ul>
       )}
+      <hr />
+      <Link href={`/${type}`}>
+        <a>{type === 'friends' ? 'Ver todos' : 'Ver todas'}</a>
+      </Link>
     </ProfileRelationsBoxWrapper>
   );
 }
