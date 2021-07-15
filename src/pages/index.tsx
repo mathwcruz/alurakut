@@ -12,6 +12,10 @@ import { Box } from 'styles/components/Box';
 import { MainGrid } from 'styles/components/MainGrid';
 import axios from 'axios';
 
+interface HomeProps {
+  userName: string;
+}
+
 interface FriendsData {
   id: number;
   userName: string;
@@ -25,13 +29,13 @@ interface CommunityData {
   creatorSlug?: string;
 }
 
-export default function Home({ githubUserName = 'mathwcruz' }) {
+export default function Home({ userName = 'mathwcruz' }: HomeProps) {
   const [friends, setFriends] = useState<FriendsData[]>([]);
   const [communities, setCommunities] = useState<CommunityData[]>([]);
 
   useMemo(async () => {
     const { data: userFollowers } = await api.get(
-      `https://api.github.com/users/${githubUserName}/followers`
+      `https://api.github.com/users/${userName}/followers`
     );
 
     const friends = userFollowers?.slice(0, 6)?.map((people) => {
@@ -78,7 +82,7 @@ export default function Home({ githubUserName = 'mathwcruz' }) {
     const newCommunity = {
       title: String(communityName),
       imageUrl: String(communityImageUrl),
-      creatorSlug: String(githubUserName),
+      creatorSlug: String(userName),
     };
 
     const { data: newCommunityRegistered } = await axios.post(
@@ -96,10 +100,10 @@ export default function Home({ githubUserName = 'mathwcruz' }) {
 
   return (
     <>
-      <AlurakutMenu githubUser={githubUserName} />
+      <AlurakutMenu githubUser={userName} />
       <MainGrid>
         <div className='profile' style={{ gridArea: 'profile' }}>
-          <ProfileSidebar userName={githubUserName} />
+          <ProfileSidebar userName={userName} />
         </div>
 
         <div className='welcome' style={{ gridArea: 'welcome' }}>
