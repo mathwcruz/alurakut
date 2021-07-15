@@ -68,8 +68,8 @@ export default function Home({ userName = 'mathwcruz' }: HomeProps) {
       }
     );
 
-    setCommunities(allCommunities?.data?.allCommunities);
     setFriends(friends);
+    setCommunities(allCommunities?.data?.allCommunities);
   }, []);
 
   async function handleCreateCommunity(e) {

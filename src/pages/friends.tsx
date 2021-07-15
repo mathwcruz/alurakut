@@ -2,6 +2,8 @@ import { useState, useMemo } from 'react';
 
 import { AlurakutMenu } from 'lib/AlurakutCommons';
 
+import { Friend } from 'components/Friends/FriendsList';
+
 import { FriendsList } from 'components/Friends/FriendsList';
 import { ProfileSidebar } from 'components/Home/ProfileSidebar';
 
@@ -15,7 +17,7 @@ interface FriendsProps {
 }
 
 export default function Friends({ userName = 'mathwcruz' }: FriendsProps) {
-  const [friends, setFriends] = useState();
+  const [friends, setFriends] = useState<Friend[]>([]);
 
   useMemo(async () => {
     const { data } = await api.get(
