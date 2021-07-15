@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { GetServerSideProps } from 'next';
 
 import { AlurakutMenu } from 'lib/AlurakutCommons';
 
@@ -6,10 +6,10 @@ import { CommunitiesList } from 'components/Communities/CommunitiesList';
 import { ProfileSidebar } from 'components/Home/ProfileSidebar';
 
 import { api } from 'services/api';
+import { dateFormatter } from 'utils/dateFormatter';
 
 import { Box } from 'styles/components/Box';
 import { Wrapper } from 'styles/pages/Communities';
-import { dateFormatter } from '~/utils/dateFormatter';
 
 export type Community = {
   id: string;
@@ -21,51 +21,13 @@ export type Community = {
 
 interface CommunitiesProps {
   userName: string;
+  communities: Community[];
 }
 
 export default function Communities({
   userName = 'mathwcruz',
+  communities,
 }: CommunitiesProps) {
-  const [communities, setCommunities] = useState<Community[]>([]);
-
-  // fazer chamada pelo server side
-  useMemo(async () => {
-    const queryData = JSON.stringify({
-      query: `query {
-                    allCommunities {
-                      id
-                      title
-                      imageUrl
-                      creatorSlug
-                      createdAt
-                    }
-                  }`,
-    });
-
-    const { data: allCommunities } = await api.post(
-      'https://graphql.datocms.com/',
-      queryData,
-      {
-        headers: {
-          Authorization: 'eb231268f090758a55c2ffc120d0d5',
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
-      }
-    );
-
-    const allCommunitiesFormatted = allCommunities?.data?.allCommunities?.map(
-      (community) => {
-        return {
-          ...community,
-          createdAt: dateFormatter(community?.createdAt, 'dd-MMM-yy'),
-        };
-      }
-    );
-
-    setCommunities(allCommunitiesFormatted);
-  }, []);
-
   return (
     <>
       <AlurakutMenu githubUser={userName} />
@@ -83,3 +45,44 @@ export default function Communities({
     </>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async () => {
+  const queryData = JSON.stringify({
+    query: `query {
+              allCommunities {
+                id
+                title
+                imageUrl
+                creatorSlug
+                createdAt
+              }
+            }`,
+  });
+
+  const { data: allCommunities } = await api.post(
+    'https://graphql.datocms.com/',
+    queryData,
+    {
+      headers: {
+        Authorization: process.env.DATO_CMS_READ_TOKEN,
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+    }
+  );
+
+  const allCommunitiesFormatted = allCommunities?.data?.allCommunities?.map(
+    (community) => {
+      return {
+        ...community,
+        createdAt: dateFormatter(community?.createdAt, 'dd-MMM-yy'),
+      };
+    }
+  );
+
+  return {
+    props: {
+      communities: allCommunitiesFormatted,
+    },
+  };
+};
