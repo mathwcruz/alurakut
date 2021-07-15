@@ -7,7 +7,6 @@ type ProfileFriends = {
 };
 
 type ProfileComunity = {
-  id: string;
   title: string;
   imageUrl: string;
 };

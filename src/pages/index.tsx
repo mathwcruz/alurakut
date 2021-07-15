@@ -11,6 +11,7 @@ import { api } from 'services/api';
 
 import { Box } from 'styles/components/Box';
 import { MainGrid } from 'styles/components/MainGrid';
+import axios from 'axios';
 
 interface FriendsData {
   id: string;
@@ -19,7 +20,6 @@ interface FriendsData {
 }
 
 interface CommunityData {
-  id: string;
   title: string;
   imageUrl: string;
   creatorSlug?: string;
@@ -66,7 +66,7 @@ export default function Home({ githubUserName = 'mathwcruz' }) {
     setFriends(friends);
   }, []);
 
-  function handleCreateCommunity(e) {
+  async function handleCreateCommunity(e) {
     e.preventDefault();
 
     const data = new FormData(e?.target);
@@ -74,13 +74,22 @@ export default function Home({ githubUserName = 'mathwcruz' }) {
     const communityImageUrl = data.get('image');
 
     const newCommunity = {
-      id: uuid(),
       title: String(communityName),
       imageUrl: String(communityImageUrl),
       creatorSlug: String(githubUserName),
     };
 
-    setCommunities([...communities, newCommunity]);
+    const { data: newCommunityRegistered } = await axios.post(
+      '/api/communities',
+      newCommunity,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+
+    setCommunities([...communities, newCommunityRegistered?.register]);
   }
 
   return (
