@@ -9,12 +9,18 @@ export function CommunitiesList({ communities }: CommunitiesListProps) {
     <ul>
       {communities?.map((community) => (
         <li key={community?.id}>
-          <section>
-            <img src={community?.imageUrl} alt={community?.title} />
-            <p>{community?.title}</p>
-            <h3>{community?.creatorSlug}</h3>
-            <small>{community?.createdAt}</small>
-          </section>
+          <div>
+            <div
+              style={{
+                backgroundImage: `url('${community?.imageUrl}')`,
+              }}
+            />
+            <section className='community-main-info'>
+              <p>{community?.title}</p>
+              <strong>Criado por {community?.creatorSlug}</strong>
+            </section>
+          </div>
+          <small>Criada no dia {community?.createdAt}</small>
         </li>
       ))}
     </ul>

@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react';
+import { GetServerSideProps } from 'next';
 
 import { AlurakutMenu } from 'lib/AlurakutCommons';
 
@@ -52,3 +53,11 @@ export default function Friends({ userName = 'mathwcruz' }: FriendsProps) {
     </>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async () => {
+  // salvar o userName nos cookies, puxar aq e fazer a requisição pro github trazendo todos os followers
+
+  return {
+    props: {},
+  };
+};
