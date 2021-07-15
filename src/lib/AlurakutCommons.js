@@ -26,8 +26,8 @@ export function AlurakutMenu({ githubUser }) {
         <nav style={{ flex: 1 }}>
           {[
             { name: 'Inicio', slug: '/' },
-            { name: 'Amigos', slug: '/amigos' },
-            { name: 'Comunidades', slug: '/comunidades' },
+            { name: 'Amigos', slug: '/friends' },
+            { name: 'Comunidades', slug: '/communities' },
           ].map((menuItem) => (
             <Link
               key={`key__${menuItem.name.toLocaleLowerCase()}`}
@@ -40,9 +40,6 @@ export function AlurakutMenu({ githubUser }) {
 
         <nav>
           <a href={`/logout`}>Sair</a>
-          <div>
-            <input placeholder='Pesquisar no Orkut' />
-          </div>
         </nav>
 
         <button onClick={() => setMenuState(!isMenuOpen)}>

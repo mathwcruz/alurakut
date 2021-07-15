@@ -22,6 +22,7 @@ interface CommunityData {
   id: string;
   title: string;
   imageUrl: string;
+  creatorSlug?: string;
 }
 
 export default function Home({ githubUserName = 'mathwcruz' }) {
@@ -76,6 +77,7 @@ export default function Home({ githubUserName = 'mathwcruz' }) {
       id: uuid(),
       title: String(communityName),
       imageUrl: String(communityImageUrl),
+      creatorSlug: String(githubUserName),
     };
 
     setCommunities([...communities, newCommunity]);
