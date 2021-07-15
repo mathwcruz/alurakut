@@ -1,4 +1,5 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { GetServerSideProps } from 'next';
 
 import { AlurakutMenu, OrkutNostalgicIconSet } from 'lib/AlurakutCommons';
 
@@ -10,11 +11,6 @@ import { api } from 'services/api';
 
 import { Box } from 'styles/components/Box';
 import { MainGrid } from 'styles/components/MainGrid';
-import axios from 'axios';
-
-interface HomeProps {
-  userName: string;
-}
 
 interface FriendsData {
   id: number;
@@ -26,12 +22,20 @@ interface CommunityData {
   id: string;
   title: string;
   imageUrl: string;
-  creatorSlug?: string;
 }
 
-export default function Home({ userName = 'mathwcruz' }: HomeProps) {
+interface HomeProps {
+  userName: string;
+  communities: CommunityData[];
+}
+
+export default function Home({
+  userName = 'mathwcruz',
+  communities: initialCommunities,
+}: HomeProps) {
   const [friends, setFriends] = useState<FriendsData[]>([]);
-  const [communities, setCommunities] = useState<CommunityData[]>([]);
+  const [communities, setCommunities] =
+    useState<CommunityData[]>(initialCommunities);
 
   useMemo(async () => {
     const { data: userFollowers } = await api.get(
@@ -46,30 +50,7 @@ export default function Home({ userName = 'mathwcruz' }: HomeProps) {
       };
     });
 
-    const queryData = JSON.stringify({
-      query: `query {
-                    allCommunities {
-                      id
-                      title
-                      imageUrl
-                    }
-                  }`,
-    });
-
-    const { data: allCommunities } = await api.post(
-      'https://graphql.datocms.com/',
-      queryData,
-      {
-        headers: {
-          Authorization: 'eb231268f090758a55c2ffc120d0d5',
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
-      }
-    );
-
     setFriends(friends);
-    setCommunities(allCommunities?.data?.allCommunities);
   }, []);
 
   async function handleCreateCommunity(e) {
@@ -85,7 +66,7 @@ export default function Home({ userName = 'mathwcruz' }: HomeProps) {
       creatorSlug: String(userName),
     };
 
-    const { data: newCommunityRegistered } = await axios.post(
+    const { data: newCommunityRegistered } = await api.post(
       '/api/communities',
       newCommunity,
       {
@@ -131,3 +112,33 @@ export default function Home({ userName = 'mathwcruz' }: HomeProps) {
     </>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async () => {
+  const queryData = JSON.stringify({
+    query: `query {
+              allCommunities {
+                id
+                title
+                imageUrl
+              }
+            }`,
+  });
+
+  const { data: allCommunities } = await api.post(
+    'https://graphql.datocms.com/',
+    queryData,
+    {
+      headers: {
+        Authorization: process.env.DATO_CMS_READ_TOKEN,
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+    }
+  );
+
+  return {
+    props: {
+      communities: allCommunities?.data?.allCommunities,
+    },
+  };
+};
