@@ -1,12 +1,13 @@
 import { ProfileRelationsBoxWrapper } from 'styles/components/ProfileRelations';
 
 type ProfileFriends = {
-  id: string;
+  id: number;
   userName: string;
   avatarUrl: string;
 };
 
 type ProfileComunity = {
+  id: string;
   title: string;
   imageUrl: string;
 };

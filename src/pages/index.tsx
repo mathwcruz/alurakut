@@ -1,5 +1,4 @@
 import { useMemo, useState } from 'react';
-import { v4 as uuid } from 'uuid';
 
 import { AlurakutMenu, OrkutNostalgicIconSet } from 'lib/AlurakutCommons';
 
@@ -14,12 +13,13 @@ import { MainGrid } from 'styles/components/MainGrid';
 import axios from 'axios';
 
 interface FriendsData {
-  id: string;
+  id: number;
   userName: string;
   avatarUrl: string;
 }
 
 interface CommunityData {
+  id: string;
   title: string;
   imageUrl: string;
   creatorSlug?: string;
@@ -42,27 +42,29 @@ export default function Home({ githubUserName = 'mathwcruz' }) {
       };
     });
 
-    //TODO: fazer requisição com o axios
-    fetch('https://graphql.datocms.com/', {
-      method: 'POST',
-      headers: {
-        Authorization: 'eb231268f090758a55c2ffc120d0d5',
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-      },
-      body: JSON.stringify({
-        query: `query {
+    const queryData = JSON.stringify({
+      query: `query {
                     allCommunities {
                       id
                       title
                       imageUrl
                     }
                   }`,
-      }),
-    })
-      .then((response) => response.json())
-      .then((result) => setCommunities(result?.data?.allCommunities));
+    });
 
+    const { data: allCommunities } = await api.post(
+      'https://graphql.datocms.com/',
+      queryData,
+      {
+        headers: {
+          Authorization: 'eb231268f090758a55c2ffc120d0d5',
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+      }
+    );
+
+    setCommunities(allCommunities?.data?.allCommunities);
     setFriends(friends);
   }, []);
 
