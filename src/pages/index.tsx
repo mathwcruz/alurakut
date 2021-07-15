@@ -21,25 +21,46 @@ interface FriendsData {
 interface CommunityData {
   id: string;
   title: string;
-  image: string;
+  imageUrl: string;
 }
 
 export default function Home({ githubUserName = 'mathwcruz' }) {
   const [friends, setFriends] = useState<FriendsData[]>([]);
-  const [comunities, setComunities] = useState<CommunityData[]>([]);
+  const [communities, setCommunities] = useState<CommunityData[]>([]);
 
   useMemo(async () => {
-    const { data } = await api.get(
+    const { data: userFollowers } = await api.get(
       `https://api.github.com/users/${githubUserName}/followers`
     );
 
-    const friends = data?.slice(0, 6)?.map((people) => {
+    const friends = userFollowers?.slice(0, 6)?.map((people) => {
       return {
         id: people?.id,
         userName: people?.login,
         avatarUrl: people?.avatar_url,
       };
     });
+
+    //TODO: fazer requisição com o axios
+    fetch('https://graphql.datocms.com/', {
+      method: 'POST',
+      headers: {
+        Authorization: 'eb231268f090758a55c2ffc120d0d5',
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+      body: JSON.stringify({
+        query: `query {
+                    allCommunities {
+                      id
+                      title
+                      imageUrl
+                    }
+                  }`,
+      }),
+    })
+      .then((response) => response.json())
+      .then((result) => setCommunities(result?.data?.allCommunities));
 
     setFriends(friends);
   }, []);
@@ -54,10 +75,10 @@ export default function Home({ githubUserName = 'mathwcruz' }) {
     const newCommunity = {
       id: uuid(),
       title: String(communityName),
-      image: String(communityImageUrl),
+      imageUrl: String(communityImageUrl),
     };
 
-    setComunities([...comunities, newCommunity]);
+    setCommunities([...communities, newCommunity]);
   }
 
   return (
@@ -85,8 +106,8 @@ export default function Home({ githubUserName = 'mathwcruz' }) {
 
           <ProfileBox
             title='Comunidades'
-            type='comunities'
-            profileData={comunities}
+            type='communities'
+            profileData={communities}
           />
         </div>
       </MainGrid>

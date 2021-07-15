@@ -7,7 +7,7 @@ interface NewCommunityFormProps {
 export function NewCommunityForm({ handleSubmit }: NewCommunityFormProps) {
   return (
     <Box>
-      <h1 className='subTitle'>O que você deseja fazer?</h1>
+      <h1 className='subTitle'>Quer criar uma comunidade?</h1>
       <form onSubmit={handleSubmit}>
         <div>
           <input

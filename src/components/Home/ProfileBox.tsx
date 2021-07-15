@@ -9,12 +9,12 @@ type ProfileFriends = {
 type ProfileComunity = {
   id: string;
   title: string;
-  image: string;
+  imageUrl: string;
 };
 
 interface ProfileBoxProps {
   title: string;
-  type: 'friends' | 'comunities';
+  type: 'friends' | 'communities';
   profileData: ProfileComunity[] | ProfileFriends[];
 }
 
@@ -44,7 +44,7 @@ export function ProfileBox({ title, type, profileData }: ProfileBoxProps) {
           {profileData?.map((comunity) => (
             <li key={comunity?.id}>
               <a href={`/users/${comunity?.title}`}>
-                <img alt={comunity?.title} src={comunity.image} />
+                <img alt={comunity?.title} src={comunity.imageUrl} />
                 <span>{comunity?.title}</span>
               </a>
             </li>
