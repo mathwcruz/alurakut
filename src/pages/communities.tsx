@@ -1,4 +1,5 @@
 import { GetServerSideProps } from 'next';
+import decode from 'jwt-decode';
 
 import { AlurakutMenu } from 'lib/AlurakutCommons';
 
@@ -21,20 +22,20 @@ export type Community = {
 };
 
 interface CommunitiesProps {
-  userName: string;
+  githubUser: string;
   communities: Community[];
 }
 
 export default function Communities({
-  userName = 'mathwcruz',
+  githubUser,
   communities,
 }: CommunitiesProps) {
   return (
     <>
-      <AlurakutMenu githubUser={userName} />
+      <AlurakutMenu githubUser={githubUser} />
       <Wrapper>
         <div className='profile' style={{ gridArea: 'profile' }}>
-          <ProfileSidebar userName={userName} />
+          <ProfileSidebar userName={githubUser} />
         </div>
         <div className='communities' style={{ gridArea: 'communities' }}>
           <Box>
@@ -50,7 +51,16 @@ export default function Communities({
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const cookies = parseCookies(ctx);
   const token = cookies['alurakut.token'];
+  const { githubUser } = decode<{ githubUser: string }>(token);
 
+  const { data } = await api.get('https://alurakut.vercel.app/api/auth', {
+    headers: {
+      Authorization: token,
+    },
+  });
+  const isAuthenticated = data?.isAuthenticated;
+
+  // trocar para if (!token || !isAuthenticated)
   if (!token) {
     return {
       redirect: {
@@ -95,6 +105,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
   return {
     props: {
+      githubUser,
       communities: allCommunitiesFormatted,
     },
   };

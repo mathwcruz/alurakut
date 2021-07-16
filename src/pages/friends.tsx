@@ -1,5 +1,5 @@
-import { useState, useMemo } from 'react';
 import { GetServerSideProps } from 'next';
+import decode from 'jwt-decode';
 
 import { AlurakutMenu } from 'lib/AlurakutCommons';
 
@@ -16,27 +16,10 @@ import { parseCookies } from 'nookies';
 
 interface FriendsProps {
   userName: string;
+  friends: Friend[];
 }
 
-export default function Friends({ userName = 'mathwcruz' }: FriendsProps) {
-  const [friends, setFriends] = useState<Friend[]>([]);
-
-  useMemo(async () => {
-    const { data } = await api.get(
-      `https://api.github.com/users/${userName}/followers`
-    );
-
-    const friends = data?.map((friend) => {
-      return {
-        id: friend?.id,
-        userName: friend?.login,
-        avatarUrl: friend?.avatar_url,
-      };
-    });
-
-    setFriends(friends);
-  }, []);
-
+export default function Friends({ userName, friends }: FriendsProps) {
   return (
     <>
       <AlurakutMenu githubUser={userName} />
@@ -58,7 +41,16 @@ export default function Friends({ userName = 'mathwcruz' }: FriendsProps) {
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const cookies = parseCookies(ctx);
   const token = cookies['alurakut.token'];
+  const { githubUser } = decode<{ githubUser: string }>(token);
 
+  const { data } = await api.get('https://alurakut.vercel.app/api/auth', {
+    headers: {
+      Authorization: token,
+    },
+  });
+  const isAuthenticated = data?.isAuthenticated;
+
+  // trocar para if (!token || !isAuthenticated)
   if (!token) {
     return {
       redirect: {
@@ -68,9 +60,22 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     };
   }
 
-  // salvar o userName nos cookies, puxar aq e fazer a requisição pro github trazendo todos os followers
+  const { data: githubFollowers } = await api.get(
+    `https://api.github.com/users/${githubUser}/followers`
+  );
+
+  const friends = githubFollowers?.map((friend) => {
+    return {
+      id: friend?.id,
+      userName: friend?.login,
+      avatarUrl: friend?.avatar_url,
+    };
+  });
 
   return {
-    props: {},
+    props: {
+      userName: githubUser,
+      friends,
+    },
   };
 };

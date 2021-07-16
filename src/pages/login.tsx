@@ -1,5 +1,4 @@
 import { useState, FormEvent } from 'react';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { setCookie } from 'nookies';
 
@@ -79,20 +78,8 @@ export default function Login() {
               onChange={(e) => setGithubUser(e.target.value)}
               placeholder='Usuário'
             />
-            {githubUser?.length === 0 && <span>Campo obrigatório</span>}
             <button type='submit'>Login</button>
           </form>
-
-          <footer className='box'>
-            <p>
-              Ainda não é membro? <br />
-              <Link href='/login'>
-                <a>
-                  <strong>ENTRAR JÁ</strong>
-                </a>
-              </Link>
-            </p>
-          </footer>
         </section>
 
         <footer className='footerArea'>

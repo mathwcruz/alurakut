@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { GetServerSideProps } from 'next';
 import { parseCookies } from 'nookies';
-import { decode } from 'jsonwebtoken';
+import decode from 'jwt-decode';
 
 import { AlurakutMenu, OrkutNostalgicIconSet } from 'lib/AlurakutCommons';
 
@@ -27,9 +27,7 @@ interface CommunityData {
 }
 
 interface HomeProps {
-  githubUser: {
-    githubUser: string;
-  };
+  githubUser: string;
   communities: CommunityData[];
 }
 
@@ -40,11 +38,10 @@ export default function Home({
   const [friends, setFriends] = useState<FriendsData[]>([]);
   const [communities, setCommunities] =
     useState<CommunityData[]>(initialCommunities);
-  const userName = githubUser?.githubUser;
 
   useMemo(async () => {
     const { data: userFollowers } = await api.get(
-      `https://api.github.com/users/${userName}/followers`
+      `https://api.github.com/users/${githubUser}/followers`
     );
 
     const friends = userFollowers?.slice(0, 6)?.map((people) => {
@@ -68,7 +65,7 @@ export default function Home({
     const newCommunity = {
       title: String(communityName),
       imageUrl: String(communityImageUrl),
-      creatorSlug: String(userName),
+      creatorSlug: String(githubUser),
     };
 
     const { data: newCommunityRegistered } = await api.post(
@@ -86,10 +83,10 @@ export default function Home({
 
   return (
     <>
-      <AlurakutMenu githubUser={userName} />
+      <AlurakutMenu githubUser={githubUser} />
       <MainGrid>
         <div className='profile' style={{ gridArea: 'profile' }}>
-          <ProfileSidebar userName={userName} />
+          <ProfileSidebar userName={githubUser} />
         </div>
 
         <div className='welcome' style={{ gridArea: 'welcome' }}>
@@ -121,7 +118,7 @@ export default function Home({
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const cookies = parseCookies(ctx);
   const token = cookies['alurakut.token'];
-  const user = decode(token);
+  const { githubUser } = decode<{ githubUser: string }>(token);
 
   const { data } = await api.get('https://alurakut.vercel.app/api/auth', {
     headers: {
@@ -131,7 +128,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const isAuthenticated = data?.isAuthenticated;
 
   // trocar para if (!token || !isAuthenticated)
-  if (!token || isAuthenticated) {
+  if (!token) {
     return {
       redirect: {
         destination: '/login',
@@ -164,7 +161,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
   return {
     props: {
-      githubUser: user,
+      githubUser,
       communities: allCommunities?.data?.allCommunities,
     },
   };
