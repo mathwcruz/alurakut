@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { GetServerSideProps } from 'next';
 import { parseCookies } from 'nookies';
 import decode from 'jwt-decode';
@@ -28,32 +28,17 @@ interface CommunityData {
 
 interface HomeProps {
   githubUser: string;
+  friends: FriendsData[];
   communities: CommunityData[];
 }
 
 export default function Home({
   githubUser,
+  friends,
   communities: initialCommunities,
 }: HomeProps) {
-  const [friends, setFriends] = useState<FriendsData[]>([]);
   const [communities, setCommunities] =
     useState<CommunityData[]>(initialCommunities);
-
-  useMemo(async () => {
-    const { data: userFollowers } = await api.get(
-      `https://api.github.com/users/${githubUser}/followers`
-    );
-
-    const friends = userFollowers?.slice(0, 6)?.map((people) => {
-      return {
-        id: people?.id,
-        userName: people?.login,
-        avatarUrl: people?.avatar_url,
-      };
-    });
-
-    setFriends(friends);
-  }, []);
 
   async function handleCreateCommunity(e) {
     e.preventDefault();
@@ -159,9 +144,22 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     }
   );
 
+  const { data: userFollowers } = await api.get(
+    `https://api.github.com/users/${githubUser}/followers`
+  );
+
+  const friends = userFollowers?.slice(0, 6)?.map((people) => {
+    return {
+      id: people?.id,
+      userName: people?.login,
+      avatarUrl: people?.avatar_url,
+    };
+  });
+
   return {
     props: {
       githubUser,
+      friends,
       communities: allCommunities?.data?.allCommunities,
     },
   };
