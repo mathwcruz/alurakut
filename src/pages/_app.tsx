@@ -1,5 +1,6 @@
 import { AppProps } from 'next/app';
 import Router from 'next/router';
+
 import Nprogress from 'nprogress';
 import { ThemeProvider } from 'styled-components';
 import { ToastContainer } from 'react-toastify';

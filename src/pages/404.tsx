@@ -10,8 +10,8 @@ export default function NotFound() {
         <p>Esta página não foi encontrada</p>
         <h4>
           Siga para a{' '}
-          <Link href='/'>
-            <a>página inicial</a>
+          <Link href='/login'>
+            <a>página de login</a>
           </Link>
         </h4>
       </div>

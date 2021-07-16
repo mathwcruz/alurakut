@@ -1,4 +1,5 @@
 import Link from 'next/link';
+
 import { ProfileRelationsBoxWrapper } from 'styles/components/ProfileRelations';
 
 type ProfileFriends = {
