@@ -1,6 +1,7 @@
 import { useState, FormEvent } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { setCookie } from 'nookies';
 
 import { api } from 'services/api';
 
@@ -18,13 +19,17 @@ export default function Login() {
           githubUser
         );
 
-        console.log(data?.token);
+        const token = data?.token;
+        setCookie(undefined, 'alurakut.token', token, {
+          path: '/',
+          maxAge: 86400,
+        });
+
+        router.push('/');
+        setGithubUser('');
       } catch (error) {
         console.log(error);
       }
-
-      // setGithubUser('');
-      // router.push('/');
     }
 
     return;

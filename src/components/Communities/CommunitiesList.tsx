@@ -22,7 +22,7 @@ export function CommunitiesList({ communities }: CommunitiesListProps) {
               <strong>Criado por {community?.creatorSlug}</strong>
             </section>
           </div>
-          <small>Criada no dia {community?.createdAt}</small>
+          <small>Criada em {community?.createdAt}</small>
         </li>
       ))}
     </ul>
