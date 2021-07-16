@@ -80,6 +80,14 @@ export const Wrapper = styled.div`
         font-size: 13px;
         font-weight: 600;
       }
+
+      @media (max-width: 500px) {
+        small {
+          bottom: 2px;
+          right: 8px;
+          font-size: 11px;
+        }
+      }
     }
   }
 `;
