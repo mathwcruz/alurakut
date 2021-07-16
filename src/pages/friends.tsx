@@ -12,6 +12,7 @@ import { api } from 'services/api';
 
 import { Box } from 'styles/components/Box';
 import { Wrapper } from 'styles/pages/Friends';
+import { parseCookies } from 'nookies';
 
 interface FriendsProps {
   userName: string;
@@ -54,7 +55,19 @@ export default function Friends({ userName = 'mathwcruz' }: FriendsProps) {
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const cookies = parseCookies(ctx);
+  const token = cookies['alurakut.token'];
+
+  if (!token) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
+  }
+
   // salvar o userName nos cookies, puxar aq e fazer a requisição pro github trazendo todos os followers
 
   return {

@@ -10,6 +10,7 @@ import { dateFormatter } from 'utils/dateFormatter';
 
 import { Box } from 'styles/components/Box';
 import { Wrapper } from 'styles/pages/Communities';
+import { parseCookies } from 'nookies';
 
 export type Community = {
   id: string;
@@ -46,7 +47,19 @@ export default function Communities({
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const cookies = parseCookies(ctx);
+  const token = cookies['alurakut.token'];
+
+  if (!token) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
+  }
+
   const queryData = JSON.stringify({
     query: `query {
               allCommunities {

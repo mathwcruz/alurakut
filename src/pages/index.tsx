@@ -1,5 +1,7 @@
 import { useMemo, useState } from 'react';
 import { GetServerSideProps } from 'next';
+import { parseCookies } from 'nookies';
+import { decode } from 'jsonwebtoken';
 
 import { AlurakutMenu, OrkutNostalgicIconSet } from 'lib/AlurakutCommons';
 
@@ -25,17 +27,20 @@ interface CommunityData {
 }
 
 interface HomeProps {
-  userName: string;
+  githubUser: {
+    githubUser: string;
+  };
   communities: CommunityData[];
 }
 
 export default function Home({
-  userName = 'mathwcruz',
+  githubUser,
   communities: initialCommunities,
 }: HomeProps) {
   const [friends, setFriends] = useState<FriendsData[]>([]);
   const [communities, setCommunities] =
     useState<CommunityData[]>(initialCommunities);
+  const userName = githubUser?.githubUser;
 
   useMemo(async () => {
     const { data: userFollowers } = await api.get(
@@ -113,7 +118,28 @@ export default function Home({
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const cookies = parseCookies(ctx);
+  const token = cookies['alurakut.token'];
+  const user = decode(token);
+
+  const { data } = await api.get('https://alurakut.vercel.app/api/auth', {
+    headers: {
+      Authorization: token,
+    },
+  });
+  const isAuthenticated = data?.isAuthenticated;
+
+  // trocar para if (!token || !isAuthenticated)
+  if (!token || isAuthenticated) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
+  }
+
   const queryData = JSON.stringify({
     query: `query {
               allCommunities {
@@ -138,6 +164,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
 
   return {
     props: {
+      githubUser: user,
       communities: allCommunities?.data?.allCommunities,
     },
   };

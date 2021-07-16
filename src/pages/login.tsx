@@ -14,19 +14,26 @@ export default function Login() {
 
     if (githubUser.trim() !== '') {
       try {
+        const body = JSON.stringify({
+          githubUser,
+        });
+
         const { data } = await api.post(
           'https://alurakut.vercel.app/api/login',
-          githubUser
+          body,
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          }
         );
 
         const token = data?.token;
         setCookie(undefined, 'alurakut.token', token, {
-          path: '/',
           maxAge: 86400,
         });
 
         router.push('/');
-        setGithubUser('');
       } catch (error) {
         console.log(error);
       }
