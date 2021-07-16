@@ -51,14 +51,6 @@ export default function Communities({
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const cookies = parseCookies(ctx);
   const token = cookies['alurakut.token'];
-  const { githubUser } = decode<{ githubUser: string }>(token);
-
-  const { data } = await api.get('https://alurakut.vercel.app/api/auth', {
-    headers: {
-      Authorization: token,
-    },
-  });
-  const isAuthenticated = data?.isAuthenticated;
 
   // trocar para if (!token || !isAuthenticated)
   if (!token) {
@@ -69,6 +61,15 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       },
     };
   }
+
+  const { githubUser } = decode<{ githubUser: string }>(token);
+
+  const { data } = await api.get('https://alurakut.vercel.app/api/auth', {
+    headers: {
+      Authorization: token,
+    },
+  });
+  const isAuthenticated = data?.isAuthenticated;
 
   const queryData = JSON.stringify({
     query: `query {
