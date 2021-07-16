@@ -1,6 +1,7 @@
 import { useState, FormEvent } from 'react';
 import { useRouter } from 'next/router';
 import { setCookie } from 'nookies';
+import { toast } from 'react-toastify';
 
 import { api } from 'services/api';
 
@@ -34,10 +35,13 @@ export default function Login() {
 
         router.push('/');
       } catch (error) {
-        console.log(error);
+        toast.error(`Ocorreu um erro, ${error}`);
       }
+
+      return;
     }
 
+    toast.error('Preencha o campo com o seu usuário');
     return;
   }
 

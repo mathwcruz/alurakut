@@ -4,8 +4,6 @@ interface CommunitiesListProps {
   communities: Community[];
 }
 
-//ajustar quebra de layout no mobile
-
 export function CommunitiesList({ communities }: CommunitiesListProps) {
   return (
     <ul>
