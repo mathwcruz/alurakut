@@ -11,6 +11,7 @@ import { ProfileBox } from 'components/Home/ProfileBox';
 import { ProfileSidebar } from 'components/Home/ProfileSidebar';
 
 import { api } from 'services/api';
+import { validateURL } from 'utils/validateUrl';
 
 import { Box } from 'styles/components/Box';
 import { MainGrid } from 'styles/components/MainGrid';
@@ -53,7 +54,12 @@ export default function Home({
     const communityImageUrl = data.get('image');
 
     if (String(communityName) === '' || String(communityImageUrl) === '') {
-      toast.error('Preencha os campos, por favor');
+      toast.error('Preencha os dois campos, por favor');
+      return;
+    }
+
+    if (!validateURL(String(communityImageUrl))) {
+      toast.error('Insira um endereço de imagem válido, por favor');
       return;
     }
 
