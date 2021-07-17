@@ -56,8 +56,6 @@ export default function Home({
       return;
     }
 
-    console.log({ isImageURLValid });
-
     if (isImageURLValid === 'invalid') {
       toast.error('Insira um endereço de imagem válido, por favor');
       return;
@@ -81,6 +79,10 @@ export default function Home({
 
     toast.success('Comunidade criada!');
 
+    if (communities?.length === 6) {
+      return;
+    }
+
     setCommunities([...communities, newCommunityRegistered?.register]);
   }
 
@@ -98,7 +100,6 @@ export default function Home({
             <OrkutNostalgicIconSet />
           </Box>
 
-          {/* <NewCommunityForm handleSubmit={handleCreateCommunity} /> */}
           <Box>
             <h1 className='subTitle'>Quer criar uma comunidade?</h1>
             <form onSubmit={handleCreateCommunity}>
