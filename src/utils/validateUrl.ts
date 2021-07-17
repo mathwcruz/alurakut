@@ -12,5 +12,6 @@ export function validateURL(url: string) {
 
     return pattern.test(url);
   }
+
   return false;
 }

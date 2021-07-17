@@ -1,8 +1,8 @@
 import React from 'react';
-import styled, { css } from 'styled-components';
 import NextLink from 'next/link';
 import { useRouter } from "next/router";
 import { destroyCookie } from 'nookies'
+import styled, { css } from 'styled-components';
 
 const BASE_URL = 'http://alurakut.vercel.app/';
 const v = '1';

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { GetServerSideProps } from 'next';
-import { destroyCookie, parseCookies } from 'nookies';
+import { parseCookies } from 'nookies';
 import decode from 'jwt-decode';
 import { toast } from 'react-toastify';
 

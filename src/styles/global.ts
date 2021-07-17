@@ -1,4 +1,5 @@
 import { createGlobalStyle } from 'styled-components';
+
 import { AlurakutStyles } from 'lib/AlurakutCommons';
 
 export const GlobalStyle = createGlobalStyle`

@@ -1,4 +1,5 @@
 import { GetServerSideProps } from 'next';
+import { parseCookies } from 'nookies';
 import decode from 'jwt-decode';
 
 import { AlurakutMenu } from 'lib/AlurakutCommons';
@@ -12,7 +13,6 @@ import { api, authApi } from 'services/api';
 
 import { Box } from 'styles/components/Box';
 import { Wrapper } from 'styles/pages/Friends';
-import { parseCookies } from 'nookies';
 
 interface FriendsProps {
   userName: string;

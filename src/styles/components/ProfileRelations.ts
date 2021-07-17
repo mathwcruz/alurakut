@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+
 import { Box } from './Box';
 
 export const ProfileRelationsBoxWrapper = styled(Box)`
@@ -53,6 +54,7 @@ export const ProfileRelationsBoxWrapper = styled(Box)`
       background-image: linear-gradient(0deg, #00000073, transparent);
     }
   }
+
   hr {
     margin-top: 12px;
     margin-bottom: 8px;

@@ -1,4 +1,5 @@
 import { GetServerSideProps } from 'next';
+import { parseCookies } from 'nookies';
 import decode from 'jwt-decode';
 
 import { AlurakutMenu } from 'lib/AlurakutCommons';
@@ -11,7 +12,6 @@ import { dateFormatter } from 'utils/dateFormatter';
 
 import { Box } from 'styles/components/Box';
 import { Wrapper } from 'styles/pages/Communities';
-import { parseCookies } from 'nookies';
 
 export type Community = {
   id: string;

@@ -1,10 +1,9 @@
 import { useState, FormEvent } from 'react';
 import { useRouter } from 'next/router';
-import { parseCookies, setCookie } from 'nookies';
+import { setCookie } from 'nookies';
 import { toast } from 'react-toastify';
 
 import { api } from 'services/api';
-import { GetServerSideProps } from 'next';
 
 export default function Login() {
   const [githubUser, setGithubUser] = useState('');
@@ -98,21 +97,3 @@ export default function Login() {
     </main>
   );
 }
-
-// export const getServerSideProps: GetServerSideProps = async (ctx) => {
-//   const cookies = parseCookies(ctx);
-//   const token = cookies['alurakut.token'];
-
-//   // if (token) {
-//   //   return {
-//   //     redirect: {
-//   //       destination: '/',
-//   //       permanent: false,
-//   //     },
-//   //   };
-//   // }
-
-//   return {
-//     props: {},
-//   };
-// };

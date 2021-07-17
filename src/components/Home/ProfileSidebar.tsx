@@ -12,7 +12,7 @@ export function ProfileSidebar({ userName }: ProfileSidebarProps) {
       <img
         style={{ borderRadius: '8px' }}
         src={`https://github.com/${userName}.png`}
-        alt='Matheus da Cruz'
+        alt={userName}
       />
       <hr />
       <p>
