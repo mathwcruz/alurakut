@@ -11,7 +11,6 @@ import { ProfileBox } from 'components/Home/ProfileBox';
 import { ProfileSidebar } from 'components/Home/ProfileSidebar';
 
 import { api, authApi } from 'services/api';
-import { validateURL } from 'utils/validateUrl';
 
 import { Box } from 'styles/components/Box';
 import { MainGrid } from 'styles/components/MainGrid';
