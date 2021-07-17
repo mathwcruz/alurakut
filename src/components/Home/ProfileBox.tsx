@@ -59,7 +59,7 @@ export function ProfileBox({
         <ul>
           {profileData?.map((comunity) => (
             <li key={comunity?.id}>
-              <a href={`/communities/${comunity?.id}`}>
+              <a href={'/'}>
                 <img alt={comunity?.title} src={comunity.imageUrl} />
                 <span>{comunity?.title}</span>
               </a>
