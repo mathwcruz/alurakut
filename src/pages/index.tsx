@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { GetServerSideProps } from 'next';
 import { parseCookies } from 'nookies';
 import decode from 'jwt-decode';
+import { toast } from 'react-toastify';
 
 import { AlurakutMenu, OrkutNostalgicIconSet } from 'lib/AlurakutCommons';
 
@@ -43,7 +44,6 @@ export default function Home({
 }: HomeProps) {
   const [communities, setCommunities] =
     useState<CommunityData[]>(initialCommunities);
-  console.log({ communities });
 
   async function handleCreateCommunity(e) {
     e.preventDefault();
@@ -51,6 +51,11 @@ export default function Home({
     const data = new FormData(e?.target);
     const communityName = data.get('title');
     const communityImageUrl = data.get('image');
+
+    if (String(communityName) === '' || String(communityImageUrl) === '') {
+      toast.error('Preencha os campos, por favor');
+      return;
+    }
 
     const newCommunity = {
       title: String(communityName),
@@ -126,12 +131,14 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
   const { githubUser } = decode<{ githubUser: string }>(token);
 
-  const { data } = await api.get('https://alurakut.vercel.app/api/auth', {
+  const { data } = await api.get('http://localhost:3000/api/auth', {
     headers: {
-      Authorization: token,
+      authorization: token,
     },
   });
+
   const isAuthenticated = data?.isAuthenticated;
+  console.log({ isAuthenticated });
 
   // if (!isAuthenticated) {
   //   return {

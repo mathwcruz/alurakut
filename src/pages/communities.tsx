@@ -68,6 +68,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       Authorization: token,
     },
   });
+
   const isAuthenticated = data?.isAuthenticated;
 
   // if (!isAuthenticated) {
