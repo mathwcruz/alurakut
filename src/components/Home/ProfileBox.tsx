@@ -33,20 +33,28 @@ export function ProfileBox({
         {title} ({totalCount})
       </h2>
       {type === 'friends' ? (
-        <ul>
-          {profileData?.map((friend) => (
-            <li key={friend?.id}>
-              <a
-                href={`https://github.com/${friend?.userName}`}
-                target='_blank'
-                rel='noopener noreferrer'
-              >
-                <img src={friend?.avatarUrl} alt={friend?.userName} />
-                <span>{friend?.userName}</span>
-              </a>
-            </li>
-          ))}
-        </ul>
+        <>
+          {!profileData?.length ? (
+            <h1 className='smallTitle'>
+              Você não possui amigos, interaja com a comunidade
+            </h1>
+          ) : (
+            <ul>
+              {profileData?.map((friend) => (
+                <li key={friend?.id}>
+                  <a
+                    href={`https://github.com/${friend?.userName}`}
+                    target='_blank'
+                    rel='noopener noreferrer'
+                  >
+                    <img src={friend?.avatarUrl} alt={friend?.userName} />
+                    <span>{friend?.userName}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          )}
+        </>
       ) : (
         <ul>
           {profileData?.map((comunity) => (
@@ -59,10 +67,14 @@ export function ProfileBox({
           ))}
         </ul>
       )}
-      <hr />
-      <Link href={`/${type}`}>
-        <a>{type === 'friends' ? 'Ver todos' : 'Ver todas'}</a>
-      </Link>
+      {profileData?.length > 0 && (
+        <>
+          <hr />
+          <Link href={`/${type}`}>
+            <a>{type === 'friends' ? 'Ver todos' : 'Ver todas'}</a>
+          </Link>
+        </>
+      )}
     </ProfileRelationsBoxWrapper>
   );
 }
