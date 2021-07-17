@@ -18,13 +18,19 @@ interface ProfileBoxProps {
   title: string;
   type: 'friends' | 'communities';
   profileData: ProfileComunity[] | ProfileFriends[];
+  totalCount: number;
 }
 
-export function ProfileBox({ title, type, profileData }: ProfileBoxProps) {
+export function ProfileBox({
+  title,
+  type,
+  profileData,
+  totalCount,
+}: ProfileBoxProps) {
   return (
     <ProfileRelationsBoxWrapper>
       <h2 className='smallTitle'>
-        {title} ({profileData?.length})
+        {title} ({totalCount})
       </h2>
       {type === 'friends' ? (
         <ul>

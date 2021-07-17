@@ -42,7 +42,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const cookies = parseCookies(ctx);
   const token = cookies['alurakut.token'];
 
-  // trocar para if (!token || !isAuthenticated)
   if (!token) {
     return {
       redirect: {
@@ -60,6 +59,15 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     },
   });
   const isAuthenticated = data?.isAuthenticated;
+
+  // if (!isAuthenticated) {
+  //   return {
+  //     redirect: {
+  //       destination: '/login',
+  //       permanent: false,
+  //     },
+  //   };
+  // }
 
   const { data: githubFollowers } = await api.get(
     `https://api.github.com/users/${githubUser}/followers`

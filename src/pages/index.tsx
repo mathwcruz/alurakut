@@ -28,17 +28,22 @@ interface CommunityData {
 
 interface HomeProps {
   githubUser: string;
+  totalFriends: number;
   friends: FriendsData[];
   communities: CommunityData[];
+  totalCommunities: number;
 }
 
 export default function Home({
   githubUser,
+  totalFriends,
   friends,
   communities: initialCommunities,
+  totalCommunities,
 }: HomeProps) {
   const [communities, setCommunities] =
     useState<CommunityData[]>(initialCommunities);
+  console.log({ communities });
 
   async function handleCreateCommunity(e) {
     e.preventDefault();
@@ -87,12 +92,18 @@ export default function Home({
           className='profileRelations'
           style={{ gridArea: 'profileRelations' }}
         >
-          <ProfileBox title='Amigos' type='friends' profileData={friends} />
+          <ProfileBox
+            title='Amigos'
+            type='friends'
+            profileData={friends}
+            totalCount={totalFriends}
+          />
 
           <ProfileBox
             title='Comunidades'
             type='communities'
             profileData={communities}
+            totalCount={totalCommunities}
           />
         </div>
       </MainGrid>
@@ -104,7 +115,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const cookies = parseCookies(ctx);
   const token = cookies['alurakut.token'];
 
-  // trocar para if (!token || !isAuthenticated)
   if (!token) {
     return {
       redirect: {
@@ -123,12 +133,24 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   });
   const isAuthenticated = data?.isAuthenticated;
 
+  // if (!isAuthenticated) {
+  //   return {
+  //     redirect: {
+  //       destination: '/login',
+  //       permanent: false,
+  //     },
+  //   };
+  // }
+
   const queryData = JSON.stringify({
     query: `query {
-              allCommunities {
+              allCommunities(first: 6) {
                 id
                 title
                 imageUrl
+              }
+              _allCommunitiesMeta {
+                count
               }
             }`,
   });
@@ -161,7 +183,9 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     props: {
       githubUser,
       friends,
+      totalFriends: userFollowers?.length,
       communities: allCommunities?.data?.allCommunities,
+      totalCommunities: allCommunities?.data?._allCommunitiesMeta?.count,
     },
   };
 };
