@@ -36,7 +36,7 @@ export function ProfileBox({
         <>
           {!profileData?.length ? (
             <h1 className='smallTitle'>
-              Você não possui amigos, interaja com a comunidade
+              Você não possui amigos no momento, interaja com a comunidade
             </h1>
           ) : (
             <ul>

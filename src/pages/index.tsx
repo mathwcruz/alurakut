@@ -1,12 +1,12 @@
-import { useState } from 'react';
+import { FormEvent, useState } from 'react';
 import { GetServerSideProps } from 'next';
 import { parseCookies } from 'nookies';
 import decode from 'jwt-decode';
+import { useValidateImageURL } from 'use-validate-image-url';
 import { toast } from 'react-toastify';
 
 import { AlurakutMenu, OrkutNostalgicIconSet } from 'lib/AlurakutCommons';
 
-import { NewCommunityForm } from 'components/Home/NewCommunityForm';
 import { ProfileBox } from 'components/Home/ProfileBox';
 import { ProfileSidebar } from 'components/Home/ProfileSidebar';
 
@@ -45,28 +45,29 @@ export default function Home({
 }: HomeProps) {
   const [communities, setCommunities] =
     useState<CommunityData[]>(initialCommunities);
+  const [communityName, setCommunityName] = useState('');
+  const [communityImageUrl, setCommunityImageUrl] = useState('');
+  const isImageURLValid = useValidateImageURL(communityImageUrl);
 
-  async function handleCreateCommunity(e) {
+  async function handleCreateCommunity(e: FormEvent) {
     e.preventDefault();
 
-    const data = new FormData(e?.target);
-    const communityName = data.get('title');
-    const communityImageUrl = data.get('image');
-
-    if (String(communityName) === '' || String(communityImageUrl) === '') {
+    if (communityName.trim() === '' || communityImageUrl.trim() === '') {
       toast.error('Preencha os dois campos, por favor');
       return;
     }
 
-    if (!validateURL(String(communityImageUrl))) {
+    console.log({ isImageURLValid });
+
+    if (isImageURLValid === 'invalid') {
       toast.error('Insira um endereço de imagem válido, por favor');
       return;
     }
 
     const newCommunity = {
-      title: String(communityName),
-      imageUrl: String(communityImageUrl),
-      creatorSlug: String(githubUser),
+      title: communityName,
+      imageUrl: communityImageUrl,
+      creatorSlug: githubUser,
     };
 
     const { data: newCommunityRegistered } = await api.post(
@@ -98,7 +99,32 @@ export default function Home({
             <OrkutNostalgicIconSet />
           </Box>
 
-          <NewCommunityForm handleSubmit={handleCreateCommunity} />
+          {/* <NewCommunityForm handleSubmit={handleCreateCommunity} /> */}
+          <Box>
+            <h1 className='subTitle'>Quer criar uma comunidade?</h1>
+            <form onSubmit={handleCreateCommunity}>
+              <div>
+                <input
+                  type='text'
+                  name='title'
+                  value={communityName}
+                  onChange={(e) => setCommunityName(e.target.value)}
+                  placeholder='Qual vai ser o nome da sua comunidade?'
+                  aria-label='Qual vai ser o nome da sua comunidade?'
+                />
+              </div>
+              <div>
+                <input
+                  name='image'
+                  value={communityImageUrl}
+                  onChange={(e) => setCommunityImageUrl(e.target.value)}
+                  placeholder='Coloque uma URL para usarmos de capa'
+                  aria-label='Coloque uma URL para usarmos de capa'
+                />
+              </div>
+              <button type='submit'>Criar comunidade</button>
+            </form>
+          </Box>
         </div>
 
         <div
