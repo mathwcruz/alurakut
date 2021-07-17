@@ -11,7 +11,7 @@ interface FriendsListProps {
 export function FriendsList({ friends }: FriendsListProps) {
   return (
     <>
-      {friends?.length ? (
+      {!friends?.length ? (
         <h1 className='smallTitle'>
           Você não possui amigos no momento, interaja com a comunidade
         </h1>
