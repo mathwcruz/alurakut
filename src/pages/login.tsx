@@ -99,20 +99,20 @@ export default function Login() {
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const cookies = parseCookies(ctx);
-  const token = cookies['alurakut.token'];
+// export const getServerSideProps: GetServerSideProps = async (ctx) => {
+//   const cookies = parseCookies(ctx);
+//   const token = cookies['alurakut.token'];
 
-  if (token) {
-    return {
-      redirect: {
-        destination: '/',
-        permanent: false,
-      },
-    };
-  }
+//   // if (token) {
+//   //   return {
+//   //     redirect: {
+//   //       destination: '/',
+//   //       permanent: false,
+//   //     },
+//   //   };
+//   // }
 
-  return {
-    props: {},
-  };
-};
+//   return {
+//     props: {},
+//   };
+// };

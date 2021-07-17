@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { GetServerSideProps } from 'next';
-import { parseCookies } from 'nookies';
+import { destroyCookie, parseCookies } from 'nookies';
 import decode from 'jwt-decode';
 import { toast } from 'react-toastify';
 
@@ -10,7 +10,7 @@ import { NewCommunityForm } from 'components/Home/NewCommunityForm';
 import { ProfileBox } from 'components/Home/ProfileBox';
 import { ProfileSidebar } from 'components/Home/ProfileSidebar';
 
-import { api } from 'services/api';
+import { api, authApi } from 'services/api';
 import { validateURL } from 'utils/validateUrl';
 
 import { Box } from 'styles/components/Box';
@@ -79,6 +79,8 @@ export default function Home({
       }
     );
 
+    toast.success('Comunidade criada!');
+
     setCommunities([...communities, newCommunityRegistered?.register]);
   }
 
@@ -135,25 +137,22 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     };
   }
 
-  const { githubUser } = decode<{ githubUser: string }>(token);
-
-  const { data } = await api.get('http://localhost:3000/api/auth', {
+  const { data } = await authApi.get(`/api/auth`, {
     headers: {
       authorization: token,
     },
   });
 
   const isAuthenticated = data?.isAuthenticated;
-  console.log({ isAuthenticated });
 
-  // if (!isAuthenticated) {
-  //   return {
-  //     redirect: {
-  //       destination: '/login',
-  //       permanent: false,
-  //     },
-  //   };
-  // }
+  if (!isAuthenticated) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
+  }
 
   const queryData = JSON.stringify({
     query: `query {
@@ -179,6 +178,8 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       },
     }
   );
+
+  const { githubUser } = decode<{ githubUser: string }>(token);
 
   const { data: userFollowers } = await api.get(
     `https://api.github.com/users/${githubUser}/followers`

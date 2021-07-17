@@ -8,7 +8,7 @@ import { Friend } from 'components/Friends/FriendsList';
 import { FriendsList } from 'components/Friends/FriendsList';
 import { ProfileSidebar } from 'components/Home/ProfileSidebar';
 
-import { api } from 'services/api';
+import { api, authApi } from 'services/api';
 
 import { Box } from 'styles/components/Box';
 import { Wrapper } from 'styles/pages/Friends';
@@ -51,23 +51,24 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     };
   }
 
-  const { githubUser } = decode<{ githubUser: string }>(token);
-
-  const { data } = await api.get('https://alurakut.vercel.app/api/auth', {
+  const { data } = await authApi.get(`/api/auth`, {
     headers: {
-      Authorization: token,
+      authorization: token,
     },
   });
+
   const isAuthenticated = data?.isAuthenticated;
 
-  // if (!isAuthenticated) {
-  //   return {
-  //     redirect: {
-  //       destination: '/login',
-  //       permanent: false,
-  //     },
-  //   };
-  // }
+  if (!isAuthenticated) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
+  }
+
+  const { githubUser } = decode<{ githubUser: string }>(token);
 
   const { data: githubFollowers } = await api.get(
     `https://api.github.com/users/${githubUser}/followers`

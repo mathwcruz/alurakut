@@ -6,7 +6,7 @@ import { AlurakutMenu } from 'lib/AlurakutCommons';
 import { CommunitiesList } from 'components/Communities/CommunitiesList';
 import { ProfileSidebar } from 'components/Home/ProfileSidebar';
 
-import { api } from 'services/api';
+import { api, authApi } from 'services/api';
 import { dateFormatter } from 'utils/dateFormatter';
 
 import { Box } from 'styles/components/Box';
@@ -61,24 +61,22 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     };
   }
 
-  const { githubUser } = decode<{ githubUser: string }>(token);
-
-  const { data } = await api.get('https://alurakut.vercel.app/api/auth', {
+  const { data } = await authApi.get(`/api/auth`, {
     headers: {
-      Authorization: token,
+      authorization: token,
     },
   });
 
   const isAuthenticated = data?.isAuthenticated;
 
-  // if (!isAuthenticated) {
-  //   return {
-  //     redirect: {
-  //       destination: '/login',
-  //       permanent: false,
-  //     },
-  //   };
-  // }
+  if (!isAuthenticated) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
+  }
 
   const queryData = JSON.stringify({
     query: `query {
@@ -91,6 +89,8 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
               }
             }`,
   });
+
+  const { githubUser } = decode<{ githubUser: string }>(token);
 
   const { data: allCommunities } = await api.post(
     'https://graphql.datocms.com/',
