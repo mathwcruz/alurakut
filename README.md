@@ -4,7 +4,7 @@
 
 ## **<h2 align="center">Front end application  💻</h2>**
 
-## <p><h2 align="center">A retro app based on Orkut developed at #ImersãoReact delivered by [Alura](https://www.alura.com.br/imersao-react)</h2> </p>
+## <p><h2 align="center">A [retro app](https://alurakut-mathwcruz.vercel.app/) based on Orkut</h2> </p>
 
 ### <p align="center"> <img src="./public/images/imersao-react-alura-logo.svg" width="400px"/> </p>
 
@@ -50,10 +50,6 @@
 * Visual feedback to the user
 * Logout of the app
 * Adding typing with TypeScript
-
-<h2 align="center"> 
-	Web application: https://alurakut-mathwcruz.vercel.app/
-</h2>
 <br>
 
 ## :star: Features
@@ -101,3 +97,5 @@ To run the application on the web, follow the instructions from your terminal:
 [![Linkedin Badge](https://img.shields.io/badge/-Matheus-blue?style=flat-square&logo=Linkedin&logoColor=white&link=https://www.linkedin.com/in/matheus-cruz-frontend/)](https://www.linkedin.com/in/matheus-cruz-frontend/) 
 [![Gmail Badge](https://img.shields.io/badge/-matheuswachcruz@gmail.com-c14438?style=flat-square&logo=Gmail&logoColor=white&link=mailto:matheuswachcruz@gmail.com)](mailto:matheuswachcruz@gmail.com)
 <br>
+
+ ### <p> <h2 align="center">Another application made by Matheus da Cruz 👨‍💻 </h2> </p>
