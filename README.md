@@ -2,11 +2,11 @@
   <img src="./public/images/favicon.svg" alt="Alurakut" width="100">
 </h1>
 
-## **<h2 align="center">Front end application  💻</h2>**
+<h2 align="center">Front end application  💻</h2>
 
-## <p><h2 align="center">A [retro app](https://alurakut-mathwcruz.vercel.app/) based on Orkut</h2> </p>
+## <h2 align="center">A [retro app](https://alurakut-mathwcruz.vercel.app/) based on Orkut</h2>
 
-### <p align="center"> <img src="./public/images/imersao-react-alura-logo.svg" width="400px"/> </p>
+<p align="center"> <img src="./public/images/imersao-react-alura-logo.svg" width="400px"/> </p>
 
 <p align="center">
   <a href="#computer-demonstration-of-the-application-web">Demonstration of the application</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
@@ -98,4 +98,4 @@ To run the application on the web, follow the instructions from your terminal:
 [![Gmail Badge](https://img.shields.io/badge/-matheuswachcruz@gmail.com-c14438?style=flat-square&logo=Gmail&logoColor=white&link=mailto:matheuswachcruz@gmail.com)](mailto:matheuswachcruz@gmail.com)
 <br>
 
- ### <p> <h2 align="center">Another application made by Matheus da Cruz 👨‍💻 </h2> </p>
+<h2 align="center">Another application developed by Matheus da Cruz 👨‍💻 </h2>
