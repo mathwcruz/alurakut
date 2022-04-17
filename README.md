@@ -4,7 +4,7 @@
 
 <h2 align="center">Front end application  💻</h2>
 
-## <h2 align="center">A [retro app](https://alurakut-mathwcruz.vercel.app/) based on Orkut</h2>
+## <h3 align="center">A [retro app](https://alurakut-mathwcruz.vercel.app/) based on Orkut</h3>
 
 <p align="center"> <img src="./public/images/imersao-react-alura-logo.svg" width="400px"/> </p>
 
